@@ -1,0 +1,11 @@
+Code-Review+2: James E. Blair <corvus@inaugust.com>
+Verified+2: Jenkins
+Code-Review+1: Spencer Krum <nibz@spencerkrum.com>
+Code-Review+2: Joshua Hesketh <joshua.hesketh@rackspace.com>
+Workflow+1: Joshua Hesketh <joshua.hesketh@rackspace.com>
+Code-Review+1: Ramy Asselin <ramy.asselin@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Thu, 29 Jan 2015 00:17:20 +0000
+Reviewed-on: https://review.openstack.org/150938
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
