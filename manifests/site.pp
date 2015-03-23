@@ -186,6 +186,14 @@ define askbot::site (
     require => File[$askbot_site_root],
   }
 
+  file { "${askbot_site_root}/cron":
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => File[$askbot_site_root],
+  }
+
   # askbot setup_templates
   # copy template files from askbot's setup_templates into site config
   $setup_templates = [ '__init__.py', 'manage.py', 'urls.py', 'django.wsgi']
@@ -203,6 +211,48 @@ define askbot::site (
     mode    => '0644',
     content => template('askbot/settings.py.erb'),
     require => File["${askbot_site_root}/config"],
+  }
+
+  # cron jobs
+  file { "${askbot_site_root}/cron/send_email_alerts.sh":
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('askbot/cron/send_email_alerts.sh.erb'),
+    require => File["${askbot_site_root}/cron"],
+  }
+
+  file { "${askbot_site_root}/cron/clean_session.sh":
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('askbot/cron/clean_session.sh.erb'),
+    require => File["${askbot_site_root}/cron"],
+  }
+
+  # 0 3 * * *
+  cron { "${slot_name}-send-email-alerts":
+    name    => "${slot_name}-send-mail-alerts.cron",
+    command => "/bin/bash ${askbot_site_root}/cron/send_email_alerts.sh",
+    user    => root,
+    minute  => '0',
+    hour    => '3',
+    require => [
+      File["${askbot_site_root}/cron/send_email_alerts.sh"],
+      ]
+  }
+
+  # 10 * * * *
+  cron { "${slot_name}-clean-session":
+    name    => "${slot_name}-clean-session.cron",
+    command => "/bin/bash ${askbot_site_root}/cron/clean_session.sh",
+    user    => root,
+    minute  => '10',
+    require => [
+      File["${askbot_site_root}/cron/clean_session.sh"],
+      ]
   }
 
   # post-configuration
