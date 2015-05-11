@@ -1,6 +1,6 @@
 {
   "name": "openstackinfra-askbot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Openstack CI",
   "summary": "Puppet module for askbot",
   "license": "Apache 2.0",
@@ -8,7 +8,8 @@
   "project_page": "http://ci.openstack.org/",
   "issues_url": "https://storyboard.openstack.org/#!/project/767",
   "operatingsystem_support": [
-    { "operatingsystem": "Ubuntu", "operatingsystemrelease": ["12.04"] }
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease": ["12.04"] },
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease": ["14.04"] }
   ],
   "requirements": [
     { "name": "pe", "version_requirement": ">= 3.2.0 < 3.4.0" },
