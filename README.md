@@ -28,24 +28,21 @@ needs to run.
 ## ::askbot
 
 A module that installs a standalone Askbot application with dependencies based
-on configuration settings.
-
-    class { 'askbot':
-      db_provider     => 'mysql',
-      askbot_version  => '0.7.50',
-      redis_enabled   => false,
-    }
-
-## ::askbot::site
-
-This module installs an Askbot site, synchronize and install the database
+on configuration settings. This class synchronize and install the database
 schema, configure the askbot-celeryd daemon required for scheduled tasks, and
 finally apply a proper log rotation.
 
-    askbot::site { 'ask.example.com':
+The source of deployement is a git repository defined in askbot_repo and
+askbot_revision parameters.
+
+  class { 'askbot':
+      dist_root                    => '/srv/dist',
+      site_root                    => '/srv/askbot-site',
+      askbot_revision              => 'master',
+      askbot_repo                  => 'https://github.com/ASKBOT/askbot-devel.git',
       www_user                     => 'www-data',
       www_group                    => 'www-data',
-      slot_name                    => 'slot0',
+      site_name                    => undef,
       # custom theme
       custom_theme_enabled         => false,
       custom_theme_name            => undef,
@@ -83,6 +80,7 @@ A helper module to compile the Sass style sheets for a custom theme. As
 OpenStack Askbot theme contains pure Sass files in the repository, for a
 production deployment those files must be compiled into css.
 
-    askbot::compass { 'slot0':
-    }
-
+ askbot::theme::compass { 'os':
+   require => Vcsrepo['/srv/askbot-site/themes'],
+   before => Exec['askbot-static-generate'],
+ }
