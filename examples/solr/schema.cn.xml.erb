@@ -68,7 +68,7 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
-                words="stopwords_en.txt"
+                words="stopwords.txt"
                 enablePositionIncrements="true"
                 />
         <filter class="solr.LowerCaseFilterFactory"/>
@@ -84,7 +84,7 @@
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
-                words="stopwords_en.txt"
+                words="stopwords.txt"
                 enablePositionIncrements="true"
                 />
         <filter class="solr.LowerCaseFilterFactory"/>
@@ -131,6 +131,9 @@
   </types>
 
   <fields>
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+   <field name="_root_" type="string" indexed="true" stored="false"/>
+
     <!-- general -->
     <field name="id" type="string" indexed="true" stored="true" multiValued="false" required="true"/>
     <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -159,9 +162,6 @@
     <field name="tags" type="text_en" indexed="true" stored="true" multiValued="true" />
 
     <field name="title" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <!-- required by solr 4 -->
-    <field name="_version_" type="long" indexed="true" stored="true"/>
 
   </fields>
 
