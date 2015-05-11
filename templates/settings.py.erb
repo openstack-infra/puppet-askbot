@@ -79,7 +79,7 @@ LANGUAGE_CODE = 'en'
 # Absolute path to the directory that holds uploaded media
 # Example: "/home/media/media.lawrence.com/"
 #MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'askbot', 'upfiles')
-MEDIA_ROOT = '/srv/askbot-sites/<%= @slot_name%>/upfiles'
+MEDIA_ROOT = '/srv/askbot-sites/upfiles'
 MEDIA_URL = '/upfiles/'
 STATIC_URL = '/m/'#this must be different from MEDIA_URL
 
@@ -151,7 +151,7 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 #take a look here http://askbot.org/en/question/207/
 
 <% if @custom_theme_enabled %>
-ASKBOT_EXTRA_SKINS_DIR = '<%= @askbot_site_root %>/themes'
+ASKBOT_EXTRA_SKINS_DIR = '<%= @site_root %>/themes'
 <% end %>
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -161,6 +161,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'askbot.user_messages.context_processors.user_messages',#must be before auth
     'django.contrib.auth.context_processors.auth', #this is required for the admin app
     'django.core.context_processors.csrf', #necessary for csrf protection
+    'askbot.deps.group_messaging.context.group_messaging_context',
 )
 
 
@@ -178,8 +179,10 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.messages',
     #'debug_toolbar',
+<% if @solr_enabled %>
     #Optional, to enable haystack search
     'haystack',
+<% end %>
     'compressor',
     'askbot',
     'askbot.deps.django_authopenid',
@@ -234,7 +237,7 @@ AUTHENTICATION_BACKENDS = (
 #logging settings
 LOG_FILENAME = 'askbot.log'
 logging.basicConfig(
-    filename=os.path.join('<%= @askbot_site_root %>/log', LOG_FILENAME),
+    filename=os.path.join('<%= @site_root %>/log', LOG_FILENAME),
     level=logging.CRITICAL,
     format='%(pathname)s TIME: %(asctime)s MSG: %(filename)s:%(funcName)s:%(lineno)d %(message)s',
 )
@@ -268,10 +271,10 @@ CSRF_COOKIE_NAME = '_csrf'
 #CSRF_COOKIE_DOMAIN = DOMAIN_NAME
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
-STATIC_ROOT = '<%= @askbot_site_root %>/static'
+STATIC_ROOT = '<%= @site_root %>/static'
 STATICFILES_DIRS = (
     ('default/media', os.path.join(ASKBOT_ROOT, 'media')),
-    <% if @custom_theme_enabled %>'<%= @askbot_site_root %>/themes',<% end %>
+    <% if @custom_theme_enabled %>'<%= @site_root %>/themes',<% end %>
 )
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -294,7 +297,13 @@ ENABLE_HAYSTACK_SEARCH = False
 #            }
 #}
 
+<% if @solr_enabled %>
 #HAYSTACK_SETTINGS
+#
+# Notice:
+#  the default and default_en url must match to avoid a bug
+#  in r0.7.53 that broke the working model of UI search and
+#  cli indexing.
 ENABLE_HAYSTACK_SEARCH = True
 
 HAYSTACK_ROUTERS = ['askbot.search.haystack.routers.LanguageRouter',]
@@ -302,7 +311,7 @@ HAYSTACK_ROUTERS = ['askbot.search.haystack.routers.LanguageRouter',]
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr'
+        'URL': 'http://127.0.0.1:8983/solr/core-en'
     },
     'default_en': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
@@ -315,7 +324,7 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'askbot.search.haystack.signals.AskbotRealtimeSignalProcessor'
-
+<% end %>
 
 
 TINYMCE_COMPRESSOR = True
@@ -346,13 +355,14 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': '250'
 }
 
-<%if  @custom_theme_name %>
 LIVESETTINGS_OPTIONS = {
     1: {
         'DB': True,
         'SETTINGS': {
             'GENERAL_SKIN_SETTINGS': {
+                <% if @custom_theme_enabled %>
                 'ASKBOT_DEFAULT_SKIN': '<%= @custom_theme_name %>',
+                <%end%>
                 'SHOW_LOGO': True
             },
             'LOGIN_PROVIDERS': {
@@ -378,7 +388,6 @@ LIVESETTINGS_OPTIONS = {
         },
     }
 }
-<%end%>
 
 #delayed notifications, time in seconds, 15 mins by default
 NOTIFICATION_DELAY_TIME = 60 * 15
