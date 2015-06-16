@@ -1,0 +1,107 @@
+# == Class: askbot::config
+# This class sets up askbot install
+#
+# == Parameters
+#
+# == Actions
+class askbot::config (
+  $db_password,
+  $redis_password,
+  $site_root                    = '/srv/askbot-site',
+  $dist_root                    = '/srv/dist',
+  $www_group                    = 'www-data',
+  $db_provider                  = 'www-data',
+  $db_name                      = 'askbotdb',
+  $db_user                      = 'askbot',
+  $db_host                      = 'localhost',
+  $askbot_debug                 = false,
+  $redis_enabled                = false,
+  $redis_prefix                 = 'askbot',
+  $redis_port                   = 6378,
+  $redis_max_memory             = '256m',
+  $redis_bind                   = '127.0.0.1',
+  $site_ssl_enabled             = false,
+  $site_ssl_cert_file_contents  = '',
+  $site_ssl_key_file_contents   = '',
+  $site_ssl_chain_file_contents = '',
+  $site_ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+  $site_ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $site_ssl_chain_file          = '',
+  $site_name                    = 'askbot',
+  $custom_theme_enabled         = false,
+  $custom_theme_name            = '',
+  $solr_enabled                 = false,
+  $smtp_port                    = 25,
+  $smtp_host                    = 'localhost',
+) {
+  file { $site_root:
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+  }
+
+  file { "${site_root}/upfiles":
+    ensure  => directory,
+    owner   => 'root',
+    group   => $www_group,
+    mode    => '0775',
+    require => File[$site_root],
+  }
+
+  if $site_ssl_enabled {
+    class { 'askbot::site::ssl':
+      site_ssl_cert_file_contents  => $site_ssl_cert_file_contents,
+      site_ssl_key_file_contents   => $site_ssl_key_file_contents,
+      site_ssl_chain_file_contents => $site_ssl_chain_file_contents,
+      site_ssl_cert_file           => $site_ssl_cert_file,
+      site_ssl_key_file            => $site_ssl_key_file,
+      site_ssl_chain_file          => $site_ssl_chain_file,
+    }
+  }
+
+  class { 'askbot::site::http':
+    site_root => $site_root,
+    site_name => $site_name,
+  }
+
+  class { 'askbot::site::celeryd':
+    site_root => $site_root,
+  }
+
+  class { 'askbot::site::config':
+    site_root            => $site_root,
+    dist_root            => $dist_root,
+    db_provider          => $db_provider,
+    db_name              => $db_name,
+    db_user              => $db_user,
+    db_password          => $db_password,
+    db_host              => $db_host,
+    askbot_debug         => $askbot_debug,
+    smtp_port            => $smtp_host,
+    smtp_host            => $smtp_port,
+    redis_enabled        => $redis_enabled,
+    redis_prefix         => $redis_prefix,
+    redis_port           => $redis_port,
+    redis_max_memory     => $redis_max_memory,
+    redis_bind           => $redis_bind,
+    redis_password       => $redis_password,
+    custom_theme_enabled => $custom_theme_enabled,
+    custom_theme_name    => $custom_theme_name,
+    solr_enabled         => $solr_enabled,
+  }
+
+  class { 'askbot::site::static':
+    site_root => $site_root,
+  }
+
+  class { 'askbot::site::log':
+    site_root => $site_root,
+    www_group => $www_group,
+  }
+
+  class { 'askbot::site::cron':
+    site_root => $site_root,
+  }
+
+}

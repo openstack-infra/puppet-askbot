@@ -1,6 +1,6 @@
 {
   "name": "openstackinfra-askbot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Openstack CI",
   "summary": "Puppet module for askbot",
   "license": "Apache 2.0",
@@ -8,7 +8,12 @@
   "project_page": "http://docs.openstack.org/infra/system-config/",
   "issues_url": "https://storyboard.openstack.org/#!/project/767",
   "operatingsystem_support": [
-    { "operatingsystem": "Ubuntu", "operatingsystemrelease": ["12.04"] }
+    { "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04"
+      ]
+    }
   ],
   "requirements": [
     { "name": "pe", "version_requirement": ">= 3.2.0 < 3.4.0" },
@@ -18,6 +23,7 @@
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 3.2.0" },
     { "name": "puppetlabs/mysql", "version_requirement": "= 0.6.1" },
     { "name": "puppetlabs/apache", "version_requirement": "= 0.0.4" },
-    { "name": "openstackinfra/redis", "version_requirement": "= 0.0.1" }
+    { "name": "openstackinfra/redis", "version_requirement": "= 0.0.1" },
+    { "name": "openstackinfra/vcsrepo", "version_requirement": "= 0.0.1" }
   ]
 }
