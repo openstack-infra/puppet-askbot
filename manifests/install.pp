@@ -10,7 +10,7 @@ class askbot::install (
 ) {
 
   if !defined(Package['git']) {
-    package { 'git':
+   package { 'git':
       ensure => present,
     }
   }
@@ -67,6 +67,8 @@ class askbot::install (
       require    => Python::Virtualenv['/usr/askbot-env'],
     }
   }
+
+  include ::httpd::mod::wsgi
 
   if $solr_enabled {
     python::pip { 'django-haystack':
