@@ -100,7 +100,7 @@ class askbot::install (
     require    => Python::Virtualenv['/usr/askbot-env'],
   }
 
-  include ::apache::mod::wsgi
+  include ::httpd::mod::wsgi
 
   exec { 'askbot-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
