@@ -5,7 +5,7 @@ class askbot::site::http (
   $site_name,
   $site_template = 'askbot/askbot.vhost.erb',
 ) {
-  apache::vhost { $site_name:
+  httpd::vhost { $site_name:
     port     => 80,
     priority => 10,
     docroot  => $site_root,
