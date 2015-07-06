@@ -68,6 +68,8 @@ class askbot::install (
     }
   }
 
+  include ::httpd::mod::wsgi
+
   if $solr_enabled {
     python::pip { 'django-haystack':
       ensure     => '2.3.1',
