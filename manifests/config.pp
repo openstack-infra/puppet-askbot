@@ -50,7 +50,7 @@ class askbot::config (
   }
 
   if $site_ssl_enabled {
-    class { 'askbot::site::ssl':
+    class { '::askbot::site::ssl':
       site_ssl_cert_file_contents  => $site_ssl_cert_file_contents,
       site_ssl_key_file_contents   => $site_ssl_key_file_contents,
       site_ssl_chain_file_contents => $site_ssl_chain_file_contents,
@@ -60,16 +60,16 @@ class askbot::config (
     }
   }
 
-  class { 'askbot::site::http':
+  class { '::askbot::site::http':
     site_root => $site_root,
     site_name => $site_name,
   }
 
-  class { 'askbot::site::celeryd':
+  class { '::askbot::site::celeryd':
     site_root => $site_root,
   }
 
-  class { 'askbot::site::config':
+  class { '::askbot::site::config':
     site_root            => $site_root,
     dist_root            => $dist_root,
     db_provider          => $db_provider,
@@ -91,16 +91,16 @@ class askbot::config (
     solr_enabled         => $solr_enabled,
   }
 
-  class { 'askbot::site::static':
+  class { '::askbot::site::static':
     site_root => $site_root,
   }
 
-  class { 'askbot::site::log':
+  class { '::askbot::site::log':
     site_root => $site_root,
     www_group => $www_group,
   }
 
-  class { 'askbot::site::cron':
+  class { '::askbot::site::cron':
     site_root => $site_root,
   }
 

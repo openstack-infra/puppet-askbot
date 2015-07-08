@@ -51,7 +51,7 @@ class askbot::install (
     }
   }
 
-  include apache::mod::wsgi
+  include ::apache::mod::wsgi
 
   if $solr_enabled {
     package { [ 'django-haystack', 'pysolr' ]:

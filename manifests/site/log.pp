@@ -22,7 +22,7 @@ class askbot::site::log (
     require => File["${site_root}/log"],
   }
 
-  include logrotate
+  include ::logrotate
   logrotate::file { 'askbot':
     log     => "${site_root}/log/askbot.log",
     options => [

@@ -8,7 +8,7 @@ class askbot::site::ssl (
   $site_ssl_key_file            = '',
   $site_ssl_chain_file          = '',
 ) {
-  include apache::ssl
+  include ::apache::ssl
 
   # site x509 certificate
   if $site_ssl_cert_file_contents != '' {

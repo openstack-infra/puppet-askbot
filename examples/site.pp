@@ -20,7 +20,7 @@ node 'default' {
 
   case $db_provider {
     'mysql': {
-      class { 'mysql::server':
+      class { '::mysql::server':
       }
 
       mysql::db { 'askbotdb':
@@ -32,7 +32,7 @@ node 'default' {
       }
     }
     'pgsql': {
-      class { 'postgresql::server': }
+      class { '::postgresql::server': }
 
       postgresql::server::db { $db_name:
         user     => $db_user,
@@ -46,7 +46,7 @@ node 'default' {
   }
 
   # redis (custom module written by tipit)
-  class { 'redis':
+  class { '::redis':
     redis_port       => $redis_port,
     redis_max_memory => $redis_max_memory,
     redis_bind       => $redis_bind,
@@ -56,7 +56,7 @@ node 'default' {
   }
 
   # solr search engine
-  class { 'solr':
+  class { '::solr':
     mirror  => 'http://apache.mesi.com.ar/lucene/solr',
     version => $solr_version,
     cores   => [ 'core-default', 'core-en', 'core-zh' ],
@@ -93,7 +93,7 @@ node 'default' {
     require => Exec['copy-solr'],
   }
 
-  class { 'askbot':
+  class { '::askbot':
     db_provider           => $db_provider,
     db_name               => $db_name,
     db_user               => $db_user,

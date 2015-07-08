@@ -84,7 +84,7 @@ class askbot (
   $smtp_host                    = 'localhost'
 ) {
 
-  class { 'askbot::install':
+  class { '::askbot::install':
     db_provider     => $db_provider,
     dist_root       => $dist_root,
     askbot_repo     => $askbot_repo,
@@ -110,7 +110,7 @@ class askbot (
     require  => [ File[$dist_root], Package['git'] ],
   }
 
-  class { 'askbot::config':
+  class { '::askbot::config':
     site_root                    => $site_root,
     dist_root                    => $dist_root,
     www_group                    => $www_group,
