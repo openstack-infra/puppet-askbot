@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
+Rake::Task[:lint].clear
+task :lint do
+  puts `puppet-lint --version`
+end
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_autoloader_layout')
