@@ -12,10 +12,10 @@ define askbot::site::setup_template (
   $dest_dir,
 ) {
   file { "${dest_dir}/${name}":
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    source  => "${template_path}/${name}",
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => "${template_path}/${name}",
   }
 }

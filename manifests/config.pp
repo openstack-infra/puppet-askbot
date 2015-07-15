@@ -35,10 +35,10 @@ class askbot::config (
   $smtp_host                    = 'localhost',
 ) {
   file { $site_root:
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
   }
 
   file { "${site_root}/upfiles":

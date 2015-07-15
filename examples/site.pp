@@ -94,24 +94,24 @@ node 'default' {
   }
 
   class { '::askbot':
-    db_provider           => $db_provider,
-    db_name               => $db_name,
-    db_user               => $db_user,
-    db_password           => $db_password,
-    redis_enabled         => $redis_enabled,
-    redis_port            => $redis_port,
-    redis_max_memory      => $redis_max_memory,
-    redis_bind            => $redis_bind,
-    redis_password        => $redis_password,
-    custom_theme_enabled  => false,
-    custom_theme_name     => 'os',
-    site_name             => $site_name,
-    askbot_debug          => true,
-    solr_enabled          => true,
+    db_provider          => $db_provider,
+    db_name              => $db_name,
+    db_user              => $db_user,
+    db_password          => $db_password,
+    redis_enabled        => $redis_enabled,
+    redis_port           => $redis_port,
+    redis_max_memory     => $redis_max_memory,
+    redis_bind           => $redis_bind,
+    redis_password       => $redis_password,
+    custom_theme_enabled => false,
+    custom_theme_name    => 'os',
+    site_name            => $site_name,
+    askbot_debug         => true,
+    solr_enabled         => true,
     # ssl setup
-    site_ssl_enabled      => true,
-    site_ssl_cert_file    => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-    site_ssl_key_file     => '/etc/ssl/private/ssl-cert-snakeoil.key',
+    site_ssl_enabled     => true,
+    site_ssl_cert_file   => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+    site_ssl_key_file    => '/etc/ssl/private/ssl-cert-snakeoil.key',
   }
 
   # custom theme
