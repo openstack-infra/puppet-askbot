@@ -74,7 +74,7 @@ class askbot::site::config (
 
   exec { 'askbot-static-generate':
     cwd         => "${site_root}/config",
-    command     => 'python manage.py collectstatic --noinput',
+    command     => '/usr/askbot-env/bin/python manage.py collectstatic --noinput',
     require     => $post_config_dependency,
     subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
@@ -82,7 +82,7 @@ class askbot::site::config (
 
   exec { 'askbot-syncdb':
     cwd         => "${site_root}/config",
-    command     => 'python manage.py syncdb --noinput',
+    command     => '/usr/askbot-env/bin/python manage.py syncdb --noinput',
     require     => $post_config_dependency,
     subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
@@ -91,7 +91,7 @@ class askbot::site::config (
   # TODO: end of chain: notify httpd, celeryd
   exec { 'askbot-migrate':
     cwd         => "${site_root}/config",
-    command     => 'python manage.py migrate --noinput',
+    command     => '/usr/askbot-env/bin/python manage.py migrate --noinput',
     require     => Exec['askbot-syncdb'],
     subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
