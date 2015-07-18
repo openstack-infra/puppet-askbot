@@ -45,7 +45,7 @@ NameVirtualHost <%= @vhost_name %>:443
   </Directory>
 
   # wsgi daemon
-  WSGIDaemonProcess askbot user=<%= @www_user %> group=<%= @www_group %> maximum-requests=1000 display-name=askbot processes=2 threads=1 shutdown-timeout=10 python-path=<%= @docroot %>
+  WSGIDaemonProcess askbot user=<%= @www_user %> group=<%= @www_group %> maximum-requests=1000 display-name=askbot processes=2 threads=1 shutdown-timeout=10 python-path=<%= @docroot %>:/usr/askbot-env/lib/python2.7/site-packages
 
   WSGIScriptAlias /  <%= @docroot %>/config/django.wsgi
 

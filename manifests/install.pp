@@ -15,73 +15,101 @@ class askbot::install (
     }
   }
 
-  if !defined(Package['python-pip']) {
-    package { 'python-pip':
+  if !defined(Package['virtualenv']) {
+    package { 'virtualenv':
       ensure => present,
     }
   }
 
-  if !defined(Package['python-dev']) {
-    package { 'python-dev':
-      ensure => present,
-    }
+  python::virtualenv { '/usr/askbot-env' :
+    ensure       => present,
+    owner        => 'root',
+    group        => 'root',
+    timeout      => 0,
+    require      => Package['virtualenv'],
   }
 
   case $db_provider {
     'mysql': {
-      $db_provider_package = 'python-mysqldb'
+      package { 'libmysqlclient-dev':
+        ensure => present,
+      }
+
+      python::pip { 'MySQL-python':
+        ensure        => '1.2.3',
+        pkgname       => 'MySQL-python',
+        virtualenv    => '/usr/askbot-env',
+        require       => [ Package['libmysqlclient-dev'], Python::Virtualenv['/usr/askbot-env'] ],
+      }
     }
     'pgsql': {
-      $db_provider_package = 'python-psycopg2'
+      package { 'libpq-dev':
+        ensure => present,
+      }
+
+      python::pip { 'psycopg2':
+        ensure        => '2.4.5',
+        pkgname       => 'psycopg2',
+        virtualenv    => '/usr/askbot-env',
+        require       => [ Package['libpq-dev'], Python::Virtualenv['/usr/askbot-env'] ],
+      }
     }
     default: {
       fail("Unsupported database provider: ${db_provider}")
     }
   }
-  if ! defined(Package[$db_provider_package]) {
-    package { $db_provider_package:
-      ensure => present,
-    }
-  }
 
   if $redis_enabled {
-    package { 'django-redis-cache':
-      ensure   => present,
-      provider => 'pip',
+    python::pip { 'redis':
+      ensure        => '1.3.0',
+      pkgname       => 'django-redis-cache',
+      virtualenv    => '/usr/askbot-env',
+      require       => Python::Virtualenv['/usr/askbot-env'],
     }
   }
-
-  include ::apache::mod::wsgi
 
   if $solr_enabled {
-    package { [ 'django-haystack', 'pysolr' ]:
-      ensure   => present,
-      provider => 'pip',
+    python::pip { 'django-haystack':
+      ensure        => '2.3.1',
+      pkgname       => 'django-haystack',
+      virtualenv    => '/usr/askbot-env',
+      require       => Python::Virtualenv['/usr/askbot-env'],
     }
-  }
 
-  package { 'stopforumspam':
-    ensure   => present,
-    provider => 'pip',
-    before   => Exec['askbot-install'],
+    python::pip { 'pysolr':
+      ensure        => '3.3.0',
+      pkgname       => 'pysolr',
+      virtualenv    => '/usr/askbot-env',
+      require       => Python::Virtualenv['/usr/askbot-env'],
+    }
   }
 
   exec { 'pip-requirements-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-    command     => "pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
+    command     => "/usr/askbot-env/bin/pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
     cwd         => "${dist_root}/askbot",
     logoutput   => on_failure,
     subscribe   => Vcsrepo["${dist_root}/askbot"],
     refreshonly => true,
   }
 
+  python::pip { 'stopforumspam':
+    ensure        => present,
+    pkgname       => 'stopforumspam',
+    virtualenv    => '/usr/askbot-env',
+    require       => Python::Virtualenv['/usr/askbot-env'],
+  }
+
+  include ::apache::mod::wsgi
+
   exec { 'askbot-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
     cwd         => "${dist_root}/askbot",
-    command     => 'python setup.py -q install',
+    command     => '/usr/askbot-env/bin/python setup.py -q install',
     logoutput   => on_failure,
     subscribe   => Vcsrepo["${dist_root}/askbot"],
     refreshonly => true,
+    require     => Exec[ 'pip-requirements-install'],
   }
 
 }
