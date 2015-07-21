@@ -1,3 +1,5 @@
+# THIS FILE IS MANAGED BY THE PUPPET MODULES SYNC REPO - DO NOT EDIT
+
 source 'https://rubygems.org'
 
 group :development, :test do
@@ -13,7 +15,6 @@ group :development, :test do
 
   # Puppet 4.x related lint checks
   gem 'puppet-lint-unquoted_string-check'
-  # Hold off on the empty string check for now
   gem 'puppet-lint-empty_string-check'
   gem 'puppet-lint-leading_zero-check'
   gem 'puppet-lint-variable_contains_upcase'
