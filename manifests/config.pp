@@ -51,6 +51,7 @@ class askbot::config (
 
   if $site_ssl_enabled {
     class { '::askbot::site::ssl':
+      site_name                    => $site_name,
       site_ssl_cert_file_contents  => $site_ssl_cert_file_contents,
       site_ssl_key_file_contents   => $site_ssl_key_file_contents,
       site_ssl_chain_file_contents => $site_ssl_chain_file_contents,

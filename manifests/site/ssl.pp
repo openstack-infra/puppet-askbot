@@ -1,6 +1,7 @@
 # == Class: askbot::site::ssl
 # This class describes the http server's SSL configuration
 class askbot::site::ssl (
+  $site_name,
   $site_ssl_cert_file_contents  = undef,
   $site_ssl_key_file_contents   = undef,
   $site_ssl_chain_file_contents = undef,
@@ -17,7 +18,7 @@ class askbot::site::ssl (
       group   => 'root',
       mode    => '0640',
       content => $site_ssl_cert_file_contents,
-      before  => Httpd::Vhost[$name],
+      before  => Httpd::Vhost[$site_name],
     }
   }
 
@@ -28,7 +29,7 @@ class askbot::site::ssl (
       group   => 'root',
       mode    => '0640',
       content => $site_ssl_key_file_contents,
-      before  => Httpd::Vhost[$name],
+      before  => Httpd::Vhost[$site_name],
     }
   }
 
@@ -39,7 +40,7 @@ class askbot::site::ssl (
       group   => 'root',
       mode    => '0640',
       content => $site_ssl_chain_file_contents,
-      before  => Httpd::Vhost[$name],
+      before  => Httpd::Vhost[$site_name],
     }
   }
 }
