@@ -81,7 +81,8 @@ class askbot (
   $custom_theme_name            = undef,
   $solr_enabled                 = false,
   $smtp_port                    = '25',
-  $smtp_host                    = 'localhost'
+  $smtp_host                    = 'localhost',
+  $askbot_ensure                = 'present',
 ) {
 
   class { '::askbot::install':
@@ -103,7 +104,7 @@ class askbot (
   }
 
   vcsrepo { "${dist_root}/askbot":
-    ensure   => latest,
+    ensure   => $askbot_ensure,
     provider => git,
     revision => $askbot_revision,
     source   => $askbot_repo,
