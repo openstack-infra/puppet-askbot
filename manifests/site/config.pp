@@ -20,6 +20,7 @@ class askbot::site::config (
   $custom_theme_enabled,
   $custom_theme_name,
   $solr_enabled,
+  $template_settings,
 ) {
 
   case $db_provider {
@@ -54,7 +55,7 @@ class askbot::site::config (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('askbot/settings.py.erb'),
+    content => template($template_settings),
     require => File["${site_root}/config"],
   }
 
