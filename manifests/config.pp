@@ -33,6 +33,7 @@ class askbot::config (
   $solr_enabled                 = false,
   $smtp_port                    = 25,
   $smtp_host                    = 'localhost',
+  $template_settings            = 'askbot/settings.py.erb',
 ) {
   file { $site_root:
     ensure => directory,
@@ -90,6 +91,7 @@ class askbot::config (
     custom_theme_enabled => $custom_theme_enabled,
     custom_theme_name    => $custom_theme_name,
     solr_enabled         => $solr_enabled,
+    template_settings    => $template_settings,
   }
 
   class { '::askbot::site::static':

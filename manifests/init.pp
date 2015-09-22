@@ -8,6 +8,7 @@
 #   - $dist_root: root directory of distribution releases
 #   - $site_root: root directory of site config and assets
 #   - $site_name: fqdn of askbot site
+#   - $template_settings: settings.py configuration template
 #
 #   Source repository:
 #   - askbot_repo: git repository of askbot source files
@@ -82,6 +83,7 @@ class askbot (
   $solr_enabled                 = false,
   $smtp_port                    = '25',
   $smtp_host                    = 'localhost',
+  $template_settings            = 'askbot/settings.py.erb',
   $askbot_ensure                = 'present',
 ) {
 
@@ -140,6 +142,7 @@ class askbot (
     solr_enabled                 => $solr_enabled,
     smtp_port                    => $smtp_port,
     smtp_host                    => $smtp_host,
+    template_settings            => $template_settings,
     require                      => [ Vcsrepo["${dist_root}/askbot"], Class['askbot::install'] ],
   }
 }
