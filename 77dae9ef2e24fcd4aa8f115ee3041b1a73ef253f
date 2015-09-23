@@ -1,0 +1,10 @@
+Verified+2: Jenkins
+Code-Review+2: Jeremy Stanley <fungi@yuggoth.org>
+Workflow+1: Jeremy Stanley <fungi@yuggoth.org>
+Code-Review+2: yolanda.robla <info@ysoft.biz>
+Code-Review+1: Glauco Oliveira <gvinici@thoughtworks.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 23 Sep 2015 14:54:39 +0000
+Reviewed-on: https://review.openstack.org/222653
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
