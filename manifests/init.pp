@@ -12,7 +12,10 @@
 #
 #   Source repository:
 #   - askbot_repo: git repository of askbot source files
-#   - askbot_revision: branch of askbot repo used for deployment
+#   - versions to checkout (askbot_revision|askbot_branch|askbot_tag)
+#     - askbot_revision: commit ref of askbot repo used for deployment
+#     - askbot_branch:   branch of askbot repo
+#     - askbot_tag:      a specific version or tag of the askbot repo
 #
 #   Custom askbot theme settings:
 #   - $custom_theme_enabled: set to true to enable custom themes, default: false
@@ -56,7 +59,9 @@ class askbot (
   $redis_password,
   $dist_root                    = '/srv/dist',
   $site_root                    = '/srv/askbot-site',
-  $askbot_revision              = 'master',
+  $askbot_branch                = 'master',
+  $askbot_tag                   = undef,
+  $askbot_revision              = undef,
   $askbot_repo                  = 'https://github.com/ASKBOT/askbot-devel.git',
   $www_group                    = 'www-data',
   $www_user                     = 'www-data',
@@ -105,12 +110,33 @@ class askbot (
     }
   }
 
-  vcsrepo { "${dist_root}/askbot":
-    ensure   => $askbot_ensure,
-    provider => git,
-    revision => $askbot_revision,
-    source   => $askbot_repo,
-    require  => [ File[$dist_root], Package['git'] ],
+  if ($askbot_revision) {
+    git { 'askbot':
+      ensure  => present,
+      path    => "${dist_root}/askbot",
+      origin  => $askbot_repo,
+      latest  => true,
+      commit  => $askbot_revision,
+      require => [ File[$dist_root], Package['git'] ],
+    }
+  } elseif ($askbot_tag) {
+    git { 'askbot':
+      ensure  => present,
+      path    => "${dist_root}/askbot",
+      origin  => $askbot_repo,
+      latest  => true,
+      tag     => $askbot_tag,
+      require => [ File[$dist_root], Package['git'] ],
+    }
+  } else {
+    git { 'askbot':
+      ensure  => present,
+      path    => "${dist_root}/askbot",
+      origin  => $askbot_repo,
+      latest  => true,
+      branch  => $askbot_branch,
+      require => [ File[$dist_root], Package['git'] ],
+    }
   }
 
   class { '::askbot::config':
@@ -143,6 +169,6 @@ class askbot (
     smtp_port                    => $smtp_port,
     smtp_host                    => $smtp_host,
     template_settings            => $template_settings,
-    require                      => [ Vcsrepo["${dist_root}/askbot"], Class['askbot::install'] ],
+    require                      => [ Git['askbot'], Class['askbot::install'] ],
   }
 }

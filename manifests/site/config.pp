@@ -70,14 +70,14 @@ class askbot::site::config (
       File["${site_root}/log"],
       Askbot::Site::Setup_template[ $setup_templates ],
       File["${site_root}/config/settings.py"],
-      Vcsrepo["${dist_root}/askbot"],
+      Git['askbot'],
     ]
 
   exec { 'askbot-static-generate':
     cwd         => "${site_root}/config",
     command     => '/usr/askbot-env/bin/python manage.py collectstatic --noinput',
     require     => $post_config_dependency,
-    subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
+    subscribe   => [Git['askbot'], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
   }
 
@@ -85,7 +85,7 @@ class askbot::site::config (
     cwd         => "${site_root}/config",
     command     => '/usr/askbot-env/bin/python manage.py syncdb --noinput',
     require     => $post_config_dependency,
-    subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
+    subscribe   => [Git['askbot'], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
   }
 
@@ -94,7 +94,7 @@ class askbot::site::config (
     cwd         => "${site_root}/config",
     command     => '/usr/askbot-env/bin/python manage.py migrate --noinput',
     require     => Exec['askbot-syncdb'],
-    subscribe   => [Vcsrepo["${dist_root}/askbot"], File["${site_root}/config/settings.py"] ],
+    subscribe   => [Git['askbot'], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
   }
 
