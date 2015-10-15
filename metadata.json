@@ -24,7 +24,7 @@
     { "name": "puppetlabs/mysql", "version_requirement": "= 0.6.1" },
     { "name": "openstackinfra/httpd", "version_requirement": "0.x" },
     { "name": "openstackinfra/redis", "version_requirement": "= 0.0.1" },
-    { "name": "openstackinfra/vcsrepo", "version_requirement": "= 0.0.1" },
-    { "name": "stankevich/python", "version_requirement": "= 1.9.4" }
+    { "name": "stankevich/python", "version_requirement": "= 1.9.4" },
+    { "name": "puppet-community/git_resource", "version_requirement": "= 0.3.0" }
   ]
 }

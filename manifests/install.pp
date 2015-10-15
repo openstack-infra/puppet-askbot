@@ -89,7 +89,7 @@ class askbot::install (
     command     => "/usr/askbot-env/bin/pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
     cwd         => "${dist_root}/askbot",
     logoutput   => on_failure,
-    subscribe   => Vcsrepo["${dist_root}/askbot"],
+    subscribe   => Git['askbot'],
     refreshonly => true,
   }
 
@@ -107,7 +107,7 @@ class askbot::install (
     cwd         => "${dist_root}/askbot",
     command     => '/usr/askbot-env/bin/python setup.py -q install',
     logoutput   => on_failure,
-    subscribe   => Vcsrepo["${dist_root}/askbot"],
+    subscribe   => Git['askbot'],
     refreshonly => true,
     require     => Exec[ 'pip-requirements-install'],
   }

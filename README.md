@@ -38,7 +38,7 @@ askbot_revision parameters.
   class { 'askbot':
       dist_root                    => '/srv/dist',
       site_root                    => '/srv/askbot-site',
-      askbot_revision              => 'master',
+      askbot_branch                => 'master',
       askbot_repo                  => 'https://github.com/ASKBOT/askbot-devel.git',
       www_user                     => 'www-data',
       www_group                    => 'www-data',
@@ -81,6 +81,6 @@ OpenStack Askbot theme contains pure Sass files in the repository, for a
 production deployment those files must be compiled into css.
 
  askbot::theme::compass { 'os':
-   require => Vcsrepo['/srv/askbot-site/themes'],
+   require => Git['askbot-theme'],
    before => Exec['askbot-static-generate'],
  }
