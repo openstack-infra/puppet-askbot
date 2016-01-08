@@ -15,6 +15,10 @@ class askbot::install (
     }
   }
 
+  package { 'libjpeg-dev':
+    ensure => present,
+  }
+
   if !defined(Package['virtualenv']) {
     package { 'virtualenv':
       ensure => present,
