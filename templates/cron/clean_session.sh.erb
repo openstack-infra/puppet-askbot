@@ -2,6 +2,6 @@
 cd <%= @site_root %>/config
 DATE=`date --rfc-3339=seconds`
 echo "Start clean session run at $DATE" >><%= @site_root %>/log/clean_session.log
-python manage.py clean_session >><%= @site_root %>/log/clean_session.log
+/usr/askbot-env/bin/python manage.py clean_session >><%= @site_root %>/log/clean_session.log
 DATE=`date --rfc-3339=seconds`
 echo "End clean session run at $DATE" >><%= @site_root %>/log/clean_session.log
