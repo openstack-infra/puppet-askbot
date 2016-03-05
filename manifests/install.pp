@@ -63,6 +63,12 @@ class askbot::install (
     }
   }
 
+  python::pip { 'captcha':
+    pkgname    => 'captcha',
+    virtualenv => '/usr/askbot-env',
+    require    => Python::Virtualenv['/usr/askbot-env'],
+  }
+
   if $redis_enabled {
     python::pip { 'redis':
       ensure     => '1.3.0',
