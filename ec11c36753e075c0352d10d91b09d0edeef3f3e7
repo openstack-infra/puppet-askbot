@@ -1,0 +1,11 @@
+Code-Review+1: Marton Kiss <marton.kiss@gmail.com>
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Code-Review+1: Ricardo Carrillo Cruz <ricardo.carrillo.cruz@gmail.com>
+Code-Review+2: Colleen Murphy <colleen@gazlene.net>
+Workflow+1: Colleen Murphy <colleen@gazlene.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 10 Mar 2016 01:11:15 +0000
+Reviewed-on: https://review.openstack.org/288916
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
