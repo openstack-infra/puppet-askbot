@@ -1,8 +1,8 @@
 # == Class: askbot::site::http
 # This class describes the http server configuration
 class askbot::site::http (
-  $site_root,
   $site_name,
+  $site_root,
   $site_template = 'askbot/askbot.vhost.erb',
 ) {
   ::httpd::vhost { $site_name:

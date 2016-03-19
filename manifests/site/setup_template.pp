@@ -8,8 +8,8 @@
 #   - $dest_dir: destination directory of target files.
 #
 define askbot::site::setup_template (
-  $template_path,
   $dest_dir,
+  $template_path,
 ) {
   file { "${dest_dir}/${name}":
     ensure => present,

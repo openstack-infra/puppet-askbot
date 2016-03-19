@@ -2,12 +2,12 @@
 # This class describes the http server's SSL configuration
 class askbot::site::ssl (
   $site_name,
-  $site_ssl_cert_file_contents  = undef,
-  $site_ssl_key_file_contents   = undef,
-  $site_ssl_chain_file_contents = undef,
   $site_ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-  $site_ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $site_ssl_cert_file_contents  = undef,
   $site_ssl_chain_file          = undef,
+  $site_ssl_chain_file_contents = undef,
+  $site_ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $site_ssl_key_file_contents   = undef,
 ) {
   include ::httpd::ssl
 
