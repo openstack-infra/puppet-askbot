@@ -57,6 +57,7 @@
 class askbot (
   $db_password,
   $redis_password,
+  $akismet_api_key              = undef,
   $askbot_branch                = 'master',
   $askbot_debug                 = false,
   $askbot_ensure                = 'present',
@@ -155,6 +156,7 @@ class askbot (
     redis_max_memory             => $redis_max_memory,
     redis_bind                   => $redis_bind,
     redis_password               => $redis_password,
+    akismet_api_key              => $akismet_api_key,
     site_ssl_enabled             => $site_ssl_enabled,
     site_ssl_cert_file_contents  => $site_ssl_cert_file_contents,
     site_ssl_key_file_contents   => $site_ssl_key_file_contents,
