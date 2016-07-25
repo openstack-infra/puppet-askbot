@@ -21,6 +21,7 @@ class askbot::site::config (
   $smtp_port,
   $solr_enabled,
   $template_settings,
+  $akismet_api_key = undef,
 ) {
 
   case $db_provider {
