@@ -7,6 +7,7 @@
 class askbot::config (
   $db_password,
   $redis_password,
+  $akismet_api_key              = undef,
   $askbot_debug                 = false,
   $custom_theme_enabled         = false,
   $custom_theme_name            = undef,

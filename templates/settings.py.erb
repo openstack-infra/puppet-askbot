@@ -94,6 +94,11 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 # Make up some unique string, and don't share it with anybody.
 SECRET_KEY = '44fb9b7219e3743bffabb6861cbc9a28'
 
+<% if @akismet_api_key != nil -%>
+# To help mitigate spam, Akismet integration needs the API key for your account
+AKISMET_API_KEY = '<%= @akismet_api_key %>'
+<% end -%>
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'askbot.skins.loaders.Loader',
