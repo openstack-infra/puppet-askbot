@@ -116,7 +116,6 @@ class askbot (
       ensure  => present,
       path    => "${dist_root}/askbot",
       origin  => $askbot_repo,
-      latest  => true,
       commit  => $askbot_revision,
       require => [ File[$dist_root], Package['git'] ],
     }
@@ -125,7 +124,6 @@ class askbot (
       ensure  => present,
       path    => "${dist_root}/askbot",
       origin  => $askbot_repo,
-      latest  => true,
       tag     => $askbot_tag,
       require => [ File[$dist_root], Package['git'] ],
     }
