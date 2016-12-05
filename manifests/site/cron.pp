@@ -51,4 +51,27 @@ class askbot::site::cron (
       File["${site_root}/cron/clean_session.sh"],
       ]
   }
+
+  # gzip old jetty logs
+  cron { 'jetty-log-gzip':
+    user        =>  'root',
+    hour        =>  '1',
+    minute      =>  '0',
+    # Jetty just outputs to a log file YYYY_mm_dd.log, thus
+    # we do not want to touch the current days log as that is active
+    command     => "find /var/log/jetty \\( ! -daystart -mtime 0 \\) -a -name '*.log' -execdir gzip {} \\;",
+    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin'
+  }
+
+  # remove old jetty logs
+  cron { 'jetty-log-cleanup':
+    user        =>  'root',
+    hour        =>  '1',
+    minute      =>  '30',
+    # because we're gzipping logs behind jetty's back, remove the old
+    # logs after a period.
+    command     => "find /var/log/jetty -name '*.log.gz' -mtime +7  -execdir rm {} \\;",
+    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin'
+  }
+
 }
