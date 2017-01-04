@@ -117,6 +117,7 @@ class askbot::install (
     cwd         => "${dist_root}/askbot",
     command     => '/usr/askbot-env/bin/pip install .',
     logoutput   => on_failure,
+    before      => [Exec['askbot-syncdb'], Exec['askbot-migrate'] ],
     subscribe   => Git['askbot'],
     refreshonly => true,
     require     => Exec[ 'pip-requirements-install'],
