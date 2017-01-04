@@ -115,7 +115,7 @@ class askbot::install (
   exec { 'askbot-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
     cwd         => "${dist_root}/askbot",
-    command     => '/usr/askbot-env/bin/python setup.py -q install',
+    command     => '/usr/askbot-env/bin/pip install .',
     logoutput   => on_failure,
     subscribe   => Git['askbot'],
     refreshonly => true,
