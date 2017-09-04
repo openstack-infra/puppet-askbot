@@ -122,4 +122,8 @@ class askbot::install (
     require     => Exec[ 'pip-requirements-install'],
   }
 
+  package { 'links':
+    ensure => present,
+  }
+
 }
