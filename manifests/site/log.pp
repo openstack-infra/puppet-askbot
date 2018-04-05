@@ -22,6 +22,15 @@ class askbot::site::log (
     require => File["${site_root}/log"],
   }
 
+  file { "${site_root}/log/clean_session.log":
+    ensure  => present,
+    replace => 'no',
+    owner   => 'root',
+    group   => $www_group,
+    mode    => '0664',
+    require => File["${site_root}/log"],
+  }
+
   include ::logrotate
   logrotate::file { 'askbot':
     log     => "${site_root}/log/askbot.log",
@@ -35,4 +44,18 @@ class askbot::site::log (
     ],
     require => File["${site_root}/log/askbot.log"],
   }
+
+  logrotate::file { 'clean_session':
+    log     => "${site_root}/log/clean_session.log",
+    options => [
+      'compress',
+      'copytruncate',
+      'missingok',
+      'rotate 7',
+      'daily',
+      'notifempty',
+    ],
+    require => File["${site_root}/log/clean_session.log"],
+  }
+
 }
