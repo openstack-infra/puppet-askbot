@@ -27,6 +27,7 @@ class askbot::install (
 
   python::virtualenv { '/usr/askbot-env':
     ensure  => present,
+    version => '2',
     owner   => 'root',
     group   => 'root',
     timeout => 0,
