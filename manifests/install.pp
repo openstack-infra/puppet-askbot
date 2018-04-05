@@ -19,18 +19,16 @@ class askbot::install (
     ensure => present,
   }
 
-  if !defined(Package['virtualenv']) {
-    package { 'virtualenv':
-      ensure => present,
-    }
+  class { 'python':
+    dev     => 'present',
   }
 
   python::virtualenv { '/usr/askbot-env':
     ensure  => present,
+    version => '2',
     owner   => 'root',
     group   => 'root',
     timeout => 0,
-    require => Package['virtualenv'],
   }
 
   case $db_provider {
@@ -96,18 +94,19 @@ class askbot::install (
 
   exec { 'pip-requirements-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-    command     => "/usr/askbot-env/bin/pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
+    command     => "/usr/askbot-env/bin/pip install -r ${dist_root}/askbot/askbot_requirements.txt",
     cwd         => "${dist_root}/askbot",
-    logoutput   => on_failure,
+    logoutput   => true,
     subscribe   => Git['askbot'],
     refreshonly => true,
+    require     => Python::Virtualenv['/usr/askbot-env'],
   }
 
   python::pip { 'stopforumspam':
     ensure     => present,
     pkgname    => 'stopforumspam',
     virtualenv => '/usr/askbot-env',
-    require    => Python::Virtualenv['/usr/askbot-env'],
+    require    => Exec[ 'pip-requirements-install' ],
   }
 
   include ::httpd::mod::wsgi
@@ -119,7 +118,12 @@ class askbot::install (
     logoutput   => on_failure,
     subscribe   => Git['askbot'],
     refreshonly => true,
-    require     => Exec[ 'pip-requirements-install'],
+    require     => [
+                    Python::Virtualenv['/usr/askbot-env'],
+                    Exec[ 'pip-requirements-install' ],
+                    Python::Pip[ 'stopforumspam' ],
+                    Python::Pip[ 'captcha' ],
+                   ],
   }
 
 }
