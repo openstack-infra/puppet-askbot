@@ -19,18 +19,16 @@ class askbot::install (
     ensure => present,
   }
 
-  if !defined(Package['virtualenv']) {
-    package { 'virtualenv':
-      ensure => present,
-    }
+  class { 'python':
+    dev     => 'present',
   }
 
   python::virtualenv { '/usr/askbot-env':
     ensure  => present,
+    version => '2',
     owner   => 'root',
     group   => 'root',
     timeout => 0,
-    require => Package['virtualenv'],
   }
 
   case $db_provider {
@@ -98,9 +96,10 @@ class askbot::install (
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
     command     => "/usr/askbot-env/bin/pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
     cwd         => "${dist_root}/askbot",
-    logoutput   => on_failure,
+    logoutput   => true,
     subscribe   => Git['askbot'],
     refreshonly => true,
+    require     => Python::Virtualenv['/usr/askbot-env'],
   }
 
   python::pip { 'stopforumspam':
