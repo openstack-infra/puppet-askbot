@@ -74,4 +74,13 @@ class askbot::site::cron (
     environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin'
   }
 
+  # remove old apache logs
+  cron { 'apache-log-cleanup':
+    user        =>  'root',
+    hour        =>  '1',
+    minute      =>  '45',
+    command     => "find /var/log/apache2 -name '*.log.gz' -mtime +30  -execdir rm {} \\;",
+    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin'
+  }
+
 }
