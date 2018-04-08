@@ -1,0 +1,15 @@
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+#EnvironmentFile=-/etc/conf.d/celery
+WorkingDirectory=/srv/askbot-site/config
+ExecStart=/usr/askbot-env/bin/python manage.py celeryd -c 5 --maxtasksperchild=1000 --time-limit=30
+ExecStop=/bin/kill -INT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
