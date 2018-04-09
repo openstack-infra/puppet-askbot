@@ -96,18 +96,19 @@ class askbot::install (
 
   exec { 'pip-requirements-install':
     path        => [ '/bin', '/sbin' , '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-    command     => "/usr/askbot-env/bin/pip install -q -r ${dist_root}/askbot/askbot_requirements.txt",
+    command     => "/usr/askbot-env/bin/pip install -r ${dist_root}/askbot/askbot_requirements.txt",
     cwd         => "${dist_root}/askbot",
-    logoutput   => on_failure,
+    logoutput   => true,
     subscribe   => Git['askbot'],
     refreshonly => true,
+    require     => Python::Virtualenv['/usr/askbot-env'],
   }
 
   python::pip { 'stopforumspam':
-    ensure     => present,
+    ensure     => '1.4.2',
     pkgname    => 'stopforumspam',
     virtualenv => '/usr/askbot-env',
-    require    => Python::Virtualenv['/usr/askbot-env'],
+    require    => Exec[ 'pip-requirements-install' ],
   }
 
   include ::httpd::mod::wsgi
@@ -119,7 +120,12 @@ class askbot::install (
     logoutput   => on_failure,
     subscribe   => Git['askbot'],
     refreshonly => true,
-    require     => Exec[ 'pip-requirements-install'],
+    require     => [
+      Python::Virtualenv['/usr/askbot-env'],
+      Exec[ 'pip-requirements-install' ],
+      Python::Pip[ 'stopforumspam' ],
+      Python::Pip[ 'captcha' ],
+      ],
   }
 
 }
