@@ -65,7 +65,7 @@ class askbot::install (
 
   python::pip { 'captcha':
     pkgname    => 'captcha',
-    ensure     => '0.2.1'
+    ensure     => '0.2.1',
     virtualenv => '/usr/askbot-env',
     require    => Python::Virtualenv['/usr/askbot-env'],
   }
