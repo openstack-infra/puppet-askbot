@@ -110,6 +110,16 @@ class askbot::install (
     require    => Exec[ 'pip-requirements-install' ],
   }
 
+  # six 1.11.0 fails with this old django,
+  # use an earlier one; see
+  #  https://github.com/benjaminp/six/issues/210
+  python::pip { 'six':
+    ensure     => '1.10.0',
+    pkgname    => 'six',
+    virtualenv => '/usr/askbot-env',
+    require    => Python::Virtualenv['/usr/askbot-env'],
+  }
+
   include ::httpd::mod::wsgi
 
   exec { 'askbot-install':
@@ -122,6 +132,7 @@ class askbot::install (
     require     => [
       Python::Virtualenv['/usr/askbot-env'],
       Exec[ 'pip-requirements-install' ],
+      Python::Pip[ 'six' ],
       Python::Pip[ 'stopforumspam' ],
       Python::Pip[ 'captcha' ],
       ],
