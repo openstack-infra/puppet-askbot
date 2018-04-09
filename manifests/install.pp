@@ -19,18 +19,17 @@ class askbot::install (
     ensure => present,
   }
 
-  if !defined(Package['virtualenv']) {
-    package { 'virtualenv':
-      ensure => present,
-    }
+  class { '::python':
+    pip => true,
+    dev => true,
   }
+  include ::python::install
 
   python::virtualenv { '/usr/askbot-env':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     timeout => 0,
-    require => Package['virtualenv'],
   }
 
   case $db_provider {
