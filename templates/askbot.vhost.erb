@@ -10,7 +10,7 @@ WSGIRestrictSignal Off
 
 NameVirtualHost <%= @vhost_name %>:80
 <VirtualHost <%= @vhost_name %>:80>
-<% if @site_ssl_enabled %>
+<% if scope.lookupvar('::askbot::config::site_ssl_enabled') %>
   ServerName <%= @srvname %>
   Redirect / https://<%= @srvname %>/
 </VirtualHost>
@@ -19,10 +19,10 @@ NameVirtualHost <%= @vhost_name %>:443
 <VirtualHost <%= @vhost_name %>:443>
   SSLEngine on
   SSLProtocol All -SSLv2 -SSLv3
-  SSLCertificateFile      <%= @site_ssl_cert_file %>
-  SSLCertificateKeyFile   <%= @site_ssl_key_file %>
-<% if @site_ssl_chain_file_contents != nil %>
-  SSLCertificateChainFile <%= @site_ssl_chain_file %>
+  SSLCertificateFile      <%= scope.lookupvar('::askbot::config::site_ssl_cert_file') %>
+  SSLCertificateKeyFile   <%= scope.lookupvar('::askbot::config::site_ssl_key_file') %>
+<% if scope.lookupvar('::askbot::config::site_ssl_chain_file_contents') != nil %>
+  SSLCertificateChainFile <%= scope.lookupvar('::askbot::config::site_ssl_chain_file') %>
 <% end %>
 <% end %>
   ServerName <%= @srvname %>
@@ -45,7 +45,7 @@ NameVirtualHost <%= @vhost_name %>:443
   </Directory>
 
   # wsgi daemon
-  WSGIDaemonProcess askbot user=<%= @www_user %> group=<%= @www_group %> maximum-requests=1000 display-name=askbot processes=2 threads=1 shutdown-timeout=10 python-path=<%= @docroot %>:/usr/askbot-env/lib/python2.7/site-packages
+  WSGIDaemonProcess askbot user=<%= scope.lookupvar('::askbot::www_user') %> group=<%= scope.lookupvar('::askbot::www_group') %> maximum-requests=1000 display-name=askbot processes=2 threads=1 shutdown-timeout=10 python-path=<%= @docroot %>:/usr/askbot-env/lib/python2.7/site-packages
 
   WSGIScriptAlias /  <%= @docroot %>/config/django.wsgi
 
