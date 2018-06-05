@@ -1,0 +1,8 @@
+Code-Review+2: Ian Wienand <iwienand@redhat.com>
+Workflow+1: Ian Wienand <iwienand@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 05 Jun 2018 20:35:18 +0000
+Reviewed-on: https://review.openstack.org/558977
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
