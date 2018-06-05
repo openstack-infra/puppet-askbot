@@ -105,6 +105,7 @@ class askbot::install (
   }
 
   python::pip { 'stopforumspam':
+    ensure     => '1.4.2',
     pkgname    => 'stopforumspam',
     virtualenv => '/usr/askbot-env',
     require    => Exec[ 'pip-requirements-install' ],
