@@ -24,4 +24,8 @@ describe 'puppet-askbot:: manifest', :if => ['debian', 'ubuntu'].include?(os[:fa
     apply_manifest(init_puppet_manifest, catch_failures: true)
   end
 
+  it 'should be idempotent' do
+    apply_manifest(init_puppet_manifest, catch_changes: true)
+  end
+
 end
