@@ -1,0 +1,9 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Joshua Hesketh <josh@nitrotech.org>
+Workflow+1: Joshua Hesketh <josh@nitrotech.org>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sat, 21 Jul 2018 15:00:52 +0000
+Reviewed-on: https://review.openstack.org/416603
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
