@@ -90,10 +90,10 @@ class askbot::site::config (
     refreshonly => true,
   }
 
-  # TODO: end of chain: notify httpd, celeryd
   exec { 'askbot-migrate':
     cwd         => "${site_root}/config",
     command     => '/usr/askbot-env/bin/python manage.py migrate --noinput',
+    notify      => [Service['askbot-celeryd'], Service['apache2'] ],
     require     => Exec['askbot-syncdb'],
     subscribe   => [Git['askbot'], File["${site_root}/config/settings.py"] ],
     refreshonly => true,
