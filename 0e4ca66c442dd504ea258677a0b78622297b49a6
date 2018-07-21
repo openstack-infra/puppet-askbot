@@ -1,0 +1,11 @@
+Code-Review+2: Jens Harbott (frickler) <j.harbott@x-ion.de>
+Code-Review+2: Colleen Murphy <colleen@gazlene.net>
+Code-Review+1: wangqi <wang.qi@99cloud.net>
+Code-Review+2: Monty Taylor <mordred@inaugust.com>
+Workflow+1: Monty Taylor <mordred@inaugust.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sat, 21 Jul 2018 14:54:24 +0000
+Reviewed-on: https://review.openstack.org/558985
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
