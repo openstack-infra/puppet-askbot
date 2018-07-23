@@ -1,0 +1,10 @@
+Code-Review+2: Colleen Murphy <colleen@gazlene.net>
+Code-Review+1: wangqi <wang.qi@99cloud.net>
+Code-Review+2: Monty Taylor <mordred@inaugust.com>
+Workflow+1: Monty Taylor <mordred@inaugust.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 23 Jul 2018 07:25:03 +0000
+Reviewed-on: https://review.openstack.org/559624
+Project: openstack-infra/puppet-askbot
+Branch: refs/heads/master
