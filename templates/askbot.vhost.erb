@@ -3,8 +3,6 @@
 # Managed by Puppet
 # ************************************
 
-<% trusty_compatible = @lsbdistcodename == 'trusty' %>
-
 WSGIRestrictStdout On
 WSGIRestrictSignal Off
 
@@ -33,7 +31,9 @@ NameVirtualHost <%= @vhost_name %>:443
   <Directory <%= @docroot %>/static/>
     Order deny,allow
     Allow from all
-    <%if trusty_compatible %>Require all granted<%end%>
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
   </Directory>
 
   # uploaded files
@@ -41,7 +41,9 @@ NameVirtualHost <%= @vhost_name %>:443
   <Directory <%= @docroot %>/upfiles/>
     Order deny,allow
     Allow from all
-    <%if trusty_compatible %>Require all granted<%end%>
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
   </Directory>
 
   # wsgi daemon
@@ -53,7 +55,9 @@ NameVirtualHost <%= @vhost_name %>:443
    WSGIProcessGroup askbot
    Order deny,allow
    Allow from all
-    <%if trusty_compatible %>Require all granted<%end%>
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
   </Location>
 
   ErrorLog /var/log/apache2/<%= @name %>_error.log

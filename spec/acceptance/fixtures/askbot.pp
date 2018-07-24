@@ -12,7 +12,7 @@ $redis_max_memory = '256m'
 $redis_bind = '127.0.0.1'
 $redis_password = 's3cr3t'
 
-$site_name = 'askbot-dev.local'
+$site_name = 'localhost'
 
 $solr_version = '4.10.4'
 
