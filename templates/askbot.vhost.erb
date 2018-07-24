@@ -21,7 +21,7 @@ NameVirtualHost <%= @vhost_name %>:443
   SSLProtocol All -SSLv2 -SSLv3
   SSLCertificateFile      <%= scope.lookupvar('::askbot::config::site_ssl_cert_file') %>
   SSLCertificateKeyFile   <%= scope.lookupvar('::askbot::config::site_ssl_key_file') %>
-<% if scope.lookupvar('::askbot::config::site_ssl_chain_file_contents') != nil %>
+<% if ![nil, :undef].include?(scope.lookupvar('::askbot::config::site_ssl_chain_file_contents')) %>
   SSLCertificateChainFile <%= scope.lookupvar('::askbot::config::site_ssl_chain_file') %>
 <% end %>
 <% end %>
