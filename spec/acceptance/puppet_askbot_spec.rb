@@ -28,4 +28,7 @@ describe 'puppet-askbot:: manifest', :if => ['debian', 'ubuntu'].include?(os[:fa
     apply_manifest(init_puppet_manifest, catch_changes: true)
   end
 
+  describe command('curl -i -L -k http://localhost') do
+    its(:stdout) { should contain('200 OK')
+  end
 end
